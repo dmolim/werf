@@ -21,7 +21,7 @@ jobs:
     strategy:
       fail-fast: false
     runs-on: ubuntu-latest
-    if: (github.event.issue.pull_request != '' && github.event.issue.state == 'open' && contains(github.event.comment.body, '/run tests')) || github.event_name == 'schedule'
+    if: (github.event.issue.pull_request != '' && contains(github.event.comment.body, '/run tests')) || github.event_name == 'schedule'
     steps:
 
     - name: Get related PR info
@@ -33,7 +33,7 @@ jobs:
         pull_number: ${{ github.event.issue.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Save PR SHA
       id: result
@@ -41,19 +41,19 @@ jobs:
       with:
         json: ${{ steps.request.outputs.data }}
         pr_sha: "head.sha"
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code (${{ steps.result.outputs.pr_sha }})
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'schedule'
+      if: (github.event_name == 'issue_comment' && github.event.issue.state == 'closed') || github.event_name == 'schedule'
 
     - name: Set up Go 1.13
       uses: actions/setup-go@v1
@@ -111,7 +111,7 @@ jobs:
         pull_number: ${{ github.event.issue.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Save PR SHA
       id: result
@@ -119,19 +119,19 @@ jobs:
       with:
         json: ${{ steps.request.outputs.data }}
         pr_sha: "head.sha"
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code (${{ steps.result.outputs.pr_sha }})
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'schedule'
+      if: (github.event_name == 'issue_comment' && github.event.issue.state == 'closed') || github.event_name == 'schedule'
 
     - name: Build
       run: go build -tags "dfrunmount dfssh" github.com/flant/werf/cmd/werf
@@ -172,7 +172,7 @@ jobs:
         pull_number: ${{ github.event.issue.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Save PR SHA
       id: result
@@ -180,19 +180,19 @@ jobs:
       with:
         json: ${{ steps.request.outputs.data }}
         pr_sha: "head.sha"
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code (${{ steps.result.outputs.pr_sha }})
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'schedule'
+      if: (github.event_name == 'issue_comment' && github.event.issue.state == 'closed') || github.event_name == 'schedule'
 
     - name: Prepare environment
       run: |
@@ -246,7 +246,7 @@ jobs:
         pull_number: ${{ github.event.issue.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Save PR SHA
       id: result
@@ -254,19 +254,19 @@ jobs:
       with:
         json: ${{ steps.request.outputs.data }}
         pr_sha: "head.sha"
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code (${{ steps.result.outputs.pr_sha }})
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'schedule'
+      if: (github.event_name == 'issue_comment' && github.event.issue.state == 'closed') || github.event_name == 'schedule'
 
     - name: Prepare environment
       run: |
@@ -332,7 +332,7 @@ jobs:
         pull_number: ${{ github.event.issue.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Save PR SHA
       id: result
@@ -340,19 +340,19 @@ jobs:
       with:
         json: ${{ steps.request.outputs.data }}
         pr_sha: "head.sha"
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code (${{ steps.result.outputs.pr_sha }})
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'schedule'
+      if: (github.event_name == 'issue_comment' && github.event.issue.state == 'closed') || github.event_name == 'schedule'
 
     - name: Prepare environment
       run: |
@@ -419,7 +419,7 @@ jobs:
         pull_number: ${{ github.event.issue.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Save PR SHA
       id: result
@@ -427,19 +427,19 @@ jobs:
       with:
         json: ${{ steps.request.outputs.data }}
         pr_sha: "head.sha"
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code (${{ steps.result.outputs.pr_sha }})
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'schedule'
+      if: (github.event_name == 'issue_comment' && github.event.issue.state == 'closed') || github.event_name == 'schedule'
 
     - name: Prepare environment
       run: |
@@ -480,7 +480,7 @@ jobs:
         pull_number: ${{ github.event.issue.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Save PR SHA
       id: result
@@ -488,19 +488,19 @@ jobs:
       with:
         json: ${{ steps.request.outputs.data }}
         pr_sha: "head.sha"
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code (${{ steps.result.outputs.pr_sha }})
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'schedule'
+      if: (github.event_name == 'issue_comment' && github.event.issue.state == 'closed') || github.event_name == 'schedule'
 
     - name: Prepare environment
       run: |
@@ -548,7 +548,7 @@ jobs:
         pull_number: ${{ github.event.issue.number }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Save PR SHA
       id: result
@@ -556,19 +556,19 @@ jobs:
       with:
         json: ${{ steps.request.outputs.data }}
         pr_sha: "head.sha"
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code (${{ steps.result.outputs.pr_sha }})
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'issue_comment'
+      if: github.event_name == 'issue_comment' && github.event.issue.state == 'open' 
 
     - name: Checkout code
       uses: actions/checkout@v1
       with:
         ref: ${{ steps.result.outputs.pr_sha }}
-      if: github.event_name == 'schedule'
+      if: (github.event_name == 'issue_comment' && github.event.issue.state == 'closed') || github.event_name == 'schedule'
 
     - name: Download coverage artifact
       uses: actions/download-artifact@master
